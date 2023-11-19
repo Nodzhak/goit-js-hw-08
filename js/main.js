@@ -62,46 +62,52 @@ const images = [
       'https://cdn.pixabay.com/photo/2019/05/17/04/35/lighthouse-4208843_1280.jpg',
     description: 'Lighthouse Coast Sea',
   },
-]
+];
 
 const galleryContainer = document.querySelector('.gallery');
 
-// Делегування
+            // Делегування
 
 galleryContainer.addEventListener('click', function (event) {
-  event.preventDefault()
+  event.preventDefault();
 
   if (event.target.classList.contains('gallery-image')) {
     const largeImage = event.target.dataset.source;
 
-    // Модальне вікно
+            // Модальне вікно
 
-    const modalWindow = basicLightbox.create(`<img src="${largeImage}" alt="Large Image">`);
-    modalWindow.show();
+    const instance = basicLightbox.create(`<img src="${largeImage}" alt="Large Image">`,);
+    instance.show();
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        instance.close();
+      }
+    })
   }
-})
+});
 
-// Розмітка елементів галереї
+            // Розмітка елементів галереї
 
 images.forEach((image) => {
-  const list = document.createElement('li')
-  list.classList.add('gallery-item')
+  const list = document.createElement('li');
+  list.classList.add('gallery-item');
 
-  const a = document.createElement('a')
-  a.href = image.original
-  a.classList.add('gallery-link')
+  const a = document.createElement('a');
+  a.href = image.original;
+  a.classList.add('gallery-link');
   a.addEventListener('click', function (event) {
-    event.preventDefault()
-  })
+    event.preventDefault();
+  });
 
-  const img = document.createElement('img')
-  img.src = image.preview
-  img.dataset.source = image.original
-  img.alt = image.description
-  img.classList.add('gallery-image')
+  const img = document.createElement('img');
+  img.src = image.preview;
+  img.dataset.source = image.original;
+  img.alt = image.description;
+  img.classList.add('gallery-image');
 
-  a.appendChild(img)
-  list.appendChild(a)
+  a.appendChild(img);
+  list.appendChild(a);
 
-  galleryContainer.appendChild(list)
-})
+  galleryContainer.appendChild(list);
+});
