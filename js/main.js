@@ -71,7 +71,7 @@ galleryContainer.addEventListener('click', function (event) {
       // Нове модальне вікно
 
     instance = basicLightbox.create(`<img src="${largeImage}" alt="Large Image">`,);
-    instance.show();
+    instance.show(() => console.log('lightbox now visible'));
      
       // Чи натиснуто "esc"?
 
@@ -81,22 +81,20 @@ galleryContainer.addEventListener('click', function (event) {
 
 function closeOnEscape(event) {
   if (event.key === 'Escape' && instance) {
-    instance.close();
+    instance.close(() => console.log('lightbox not visible anymore'))
 
       // Видалення прослуховування події після закриття вікна.
 
     document.removeEventListener('keydown', closeOnEscape);}}
 
 // Розмітка елементів галереї
-images.forEach((image) => {
+  const elements = images.map((image) => {
   const list = document.createElement('li');
   list.classList.add('gallery-item');
 
   const a = document.createElement('a');
   a.href = image.original;
   a.classList.add('gallery-link');
-  a.addEventListener('click', function (event) {
-    event.preventDefault();})
 
   const img = document.createElement('img');
   img.src = image.preview;
@@ -106,5 +104,7 @@ images.forEach((image) => {
 
   a.appendChild(img);
   list.appendChild(a);
+  return list;
+  })
 
-  galleryContainer.appendChild(list);})
+  galleryContainer.append(...elements);
