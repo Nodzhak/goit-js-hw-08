@@ -46,6 +46,27 @@ const images = [
     description: 'Lighthouse Coast Sea',},
 ]
 
+      // Розмітка елементів галереї
+
+const elements = images.map((image) => {
+  const list = document.createElement('li');
+  list.classList.add('gallery-item');
+
+  const a = document.createElement('a');
+  a.href = image.original;
+  a.classList.add('gallery-link');
+
+  const img = document.createElement('img');
+  img.src = image.preview;
+  img.dataset.source = image.original;
+  img.alt = image.description;
+  img.classList.add('gallery-image');
+
+  a.appendChild(img);
+  list.appendChild(a);
+  return list;
+  })
+
       // Контейнер галереї
 
 const galleryContainer = document.querySelector('.gallery');
@@ -87,24 +108,6 @@ function closeOnEscape(event) {
 
     document.removeEventListener('keydown', closeOnEscape);}}
 
-// Розмітка елементів галереї
-  const elements = images.map((image) => {
-  const list = document.createElement('li');
-  list.classList.add('gallery-item');
 
-  const a = document.createElement('a');
-  a.href = image.original;
-  a.classList.add('gallery-link');
-
-  const img = document.createElement('img');
-  img.src = image.preview;
-  img.dataset.source = image.original;
-  img.alt = image.description;
-  img.classList.add('gallery-image');
-
-  a.appendChild(img);
-  list.appendChild(a);
-  return list;
-  })
 
   galleryContainer.append(...elements);
