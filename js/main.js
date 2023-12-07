@@ -92,7 +92,7 @@ galleryContainer.addEventListener('click', function (event) {
       // Нове модальне вікно
 
     instance = basicLightbox.create(`<img src="${largeImage}" alt="Large Image">`,);
-    instance.show(() => console.log('lightbox now visible'));
+    instance.show(() => console.log('now visible'));
      
       // Чи натиснуто "esc"?
 
@@ -102,12 +102,11 @@ galleryContainer.addEventListener('click', function (event) {
 
 function closeOnEscape(event) {
   if (event.key === 'Escape' && instance) {
-    instance.close(() => console.log('lightbox not visible anymore'))
+    instance.close(() => console.log('not visible'))
 
       // Видалення прослуховування події після закриття вікна.
-
     document.removeEventListener('keydown', closeOnEscape);}}
 
-
-
   galleryContainer.append(...elements);
+
+  
