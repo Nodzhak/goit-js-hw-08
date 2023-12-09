@@ -64,8 +64,6 @@ const images = [
   },
 ]
 
-// Розмітка елементів галереї
-
 const elements = images.map((image) => {
   const list = document.createElement('li')
   list.classList.add('gallery-item')
@@ -85,53 +83,31 @@ const elements = images.map((image) => {
   return list
 })
 
-// Отримання контейнера галереї
 const galleryContainer = document.querySelector('.gallery')
 let instance = null
 
-// Закриття вікна при натисканні "Escape" / видалення слухача
+galleryContainer.append(...elements)
+
 function closeOnEscape(event) {
   if (event.key === 'Escape' && instance) {
-    instance.close(() => console.log('not visible'))
-    document.removeEventListener('keydown', closeOnEscape)
+    instance.close()
   }
 }
 
-// Закриття вікна при кліку на бекдроп / видалення слухача
-function closeOnOutsideClick(event) {
-  if (event.target.classList.contains('basicLightbox')) {
-    instance.close(() => console.log('not visible'))
-    document.removeEventListener('click', closeOnOutsideClick) 
-  }
-}
-
-// Додавання слухача для відкриття вікна
 galleryContainer.addEventListener('click', function (event) {
   event.preventDefault()
 
   if (event.target.classList.contains('gallery-image')) {
     const largeImage = event.target.dataset.source
 
-    // Закриття попереднього вікна
-    if (instance) {
-      instance.close()
-    }
-
-    // Створення нового вікна
     instance = basicLightbox.create(
-      `<img src="${largeImage}" alt="Large Image">`,
+      `<img src="${largeImage}" alt="Large Image">`, {
+        onShow: () => {document.addEventListener('keydown', closeOnEscape)},
+        onClose: () => {document.removeEventListener('keydown', closeOnEscape)}
+      }
     )
-
-    // Показ модального вікна / додавання слухача для закриття вікна при кліку на бекдроп
-    instance.show(() => {
-      console.log('now visible')
-      document.addEventListener('click', closeOnOutsideClick)
-    })
-
-    // Додавання слухача для закриття вікна при натисканні "Escape"
-    document.addEventListener('keydown', closeOnEscape)
+    instance.show()
   }
 })
 
-// Додавання елементів галереї до контейнера
-galleryContainer.append(...elements)
+
